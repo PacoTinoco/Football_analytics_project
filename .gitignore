@@ -3,6 +3,10 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Data
+data/processed/
+*.pkl
+
 # C extensions
 *.so
 

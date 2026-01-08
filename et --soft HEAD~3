@@ -1,0 +1,62 @@
+[33mcommit 9fc5829ed49eb083040fc48ac9219029ffe48281[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: PacoTinoco <jose.tinoco@iteso.mx>
+Date:   Thu Jan 8 12:34:35 2026 -0600
+
+    add file
+
+ notebooks/01_data_exploration.ipynb | 4 [32m++[m[31m--[m
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+[33mcommit c37f1293aecac8b05c45a7cc13be4fd9214ec3bc[m
+Author: PacoTinoco <jose.tinoco@iteso.mx>
+Date:   Thu Jan 8 12:28:50 2026 -0600
+
+    Ignore processed data files
+
+ .gitignore                           |   4 [32m++++[m
+ data/processed/all_passes_wc2022.pkl | Bin [31m129134349[m -> [32m0[m bytes
+ 2 files changed, 4 insertions(+)
+
+[33mcommit ac86266a6af18732a578794c4422b9a2d8cf1440[m
+Author: PacoTinoco <jose.tinoco@iteso.mx>
+Date:   Thu Jan 8 12:23:43 2026 -0600
+
+    upload notebook, data and src
+
+ README.md                                    |  203 [32m++[m[31m-[m
+ data/processed/all_passes_wc2022.pkl         |  Bin [31m0[m -> [32m129134349[m bytes
+ data/processed/feature_list.txt              |   19 [32m+[m
+ data/processed/oart_event_level.pkl          |  Bin [31m0[m -> [32m8632322[m bytes
+ data/processed/oart_player_level.csv         |  495 [32m++++++[m
+ data/processed/oart_team_level.csv           |   33 [32m+[m
+ data/processed/pass_success_model.joblib     |  Bin [31m0[m -> [32m407288[m bytes
+ data/processed/passes_with_predictions.pkl   |  Bin [31m0[m -> [32m8438571[m bytes
+ football_cv_project/test_yolo.py             |   10 [32m+[m
+ football_cv_project/yolo.ipynb               |   30 [32m+[m
+ notebooks/01_data_exploration.ipynb          | 2344 [32m++++++++++++++++++++++++++[m
+ notebooks/02_pass_success_model.ipynb        | 1048 [32m++++++++++++[m
+ notebooks/03_oart_calculation.ipynb          | 1184 [32m+++++++++++++[m
+ outputs/figures/event_distribution.png       |  Bin [31m0[m -> [32m72058[m bytes
+ outputs/figures/feature_importance.png       |  Bin [31m0[m -> [32m104531[m bytes
+ outputs/figures/freeze_frame_options.png     |  Bin [31m0[m -> [32m115842[m bytes
+ outputs/figures/model_calibration.png        |  Bin [31m0[m -> [32m89808[m bytes
+ outputs/figures/oart_by_team.png             |  Bin [31m0[m -> [32m94929[m bytes
+ outputs/figures/oart_event_distribution.png  |  Bin [31m0[m -> [32m72640[m bytes
+ outputs/figures/oart_player_distribution.png |  Bin [31m0[m -> [32m260119[m bytes
+ outputs/figures/pass_map_example.png         |  Bin [31m0[m -> [32m275363[m bytes
+ outputs/figures/split_half_reliability.png   |  Bin [31m0[m -> [32m177629[m bytes
+ quick_start.py                               |  281 [32m+++[m
+ src/__init__.py                              |   34 [32m+[m
+ src/oart.py                                  |  434 [32m+++++[m
+ 25 files changed, 6114 insertions(+), 1 deletion(-)
+
+[33mcommit c6938fec0977713670e5009a4fbe9db125aa1651[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: PacoTinoco <142547437+PacoTinoco@users.noreply.github.com>
+Date:   Wed Jan 7 18:43:41 2026 -0600
+
+    Initial commit
+
+ .gitignore | 207 [32m+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ LICENSE    |  21 [32m+++++++[m
+ README.md  |   1 [32m+[m
+ 3 files changed, 229 insertions(+)
