@@ -1,0 +1,17 @@
+{
+  "pixel_points": [
+    [82, 95],
+    [690, 55],
+    [0, 480],
+    [848, 410]
+  ],
+  "pitch_points": [
+    [30, 15],
+    [80, 15],
+    [30, 68],
+    [80, 68]
+  ],
+  "video_width": 848,
+  "video_height": 480,
+  "notes": "Vista diagonal desde medio campo hacia área derecha. Puntos aproximados basados en líneas visibles."
+}
