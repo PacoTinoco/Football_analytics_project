@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ Football Analytics Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .upload-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px dashed #444;
+            transition: all 0.3s;
+        }
+
+        .upload-section:hover {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .upload-section.dragover {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .upload-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .status-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .status-section.active {
+            display: block;
+        }
+
+        .progress-bar {
+            background: #333;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .results-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .result-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .result-card h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .result-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .players-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .players-table th,
+        .players-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .players-table th {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .players-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .status-badge.processing {
+            background: #ff9800;
+            color: #000;
+        }
+
+        .status-badge.completed {
+            background: #4CAF50;
+        }
+
+        .status-badge.error {
+            background: #f44336;
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .file-info {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚽ Football Analytics Platform</h1>
+            <p>Sube un video de fútbol y obtén análisis con IA</p>
+        </header>
+
+        <!-- Upload Section -->
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-icon">📤</div>
+            <h2>Arrastra tu video aquí</h2>
+            <p style="margin: 15px 0; color: #888;">o</p>
+            <input type="file" id="fileInput" accept=".mp4,.avi,.mov,.mkv">
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                Seleccionar Video
+            </button>
+            <p style="margin-top: 20px; color: #666; font-size: 0.9rem;">
+                Formatos soportados: MP4, AVI, MOV, MKV
+            </p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Status Section -->
+        <div class="status-section" id="statusSection">
+            <h2>📊 Estado del Análisis <span class="status-badge processing" id="statusBadge">Procesando</span></h2>
+            <div class="file-info" id="fileInfo"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText">Iniciando análisis...</p>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <h2>📈 Resultados del Análisis</h2>
+            
+            <div class="results-grid" id="summaryGrid">
+                <!-- Se llena dinámicamente -->
+            </div>
+
+            <h3 style="margin-top: 30px;">🏃 Top Jugadores por Actividad</h3>
+            <table class="players-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>ID Jugador</th>
+                        <th>Frames Detectado</th>
+                        <th>Distancia (px)</th>
+                    </tr>
+                </thead>
+                <tbody id="playersTableBody">
+                    <!-- Se llena dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let currentJobId = null;
+
+        // Drag and drop
+        const uploadSection = document.getElementById('uploadSection');
+        
+        uploadSection.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+        });
+
+        uploadSection.addEventListener('dragleave', () => {
+            uploadSection.classList.remove('dragover');
+        });
+
+        uploadSection.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) uploadFile(file);
+        });
+
+        // File input change
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) uploadFile(file);
+        });
+
+        // Upload file
+        async function uploadFile(file) {
+            hideError();
+            
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                // Show status section
+                document.getElementById('statusSection').classList.add('active');
+                document.getElementById('fileInfo').innerHTML = `
+                    <strong>Archivo:</strong> ${file.name}<br>
+                    <strong>Tamaño:</strong> ${(file.size / 1024 / 1024).toFixed(2)} MB
+                `;
+                updateProgress(0, 'Subiendo video...');
+
+                // Upload
+                const uploadResponse = await fetch(`${API_URL}/api/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Error al subir el video');
+                }
+
+                const uploadData = await uploadResponse.json();
+                currentJobId = uploadData.job_id;
+                
+                updateProgress(10, 'Video subido. Iniciando análisis...');
+
+                // Start analysis
+                const analyzeResponse = await fetch(`${API_URL}/api/analyze/${currentJobId}`, {
+                    method: 'POST'
+                });
+
+                if (!analyzeResponse.ok) {
+                    throw new Error('Error al iniciar análisis');
+                }
+
+                const analyzeData = await analyzeResponse.json();
+                
+                if (analyzeData.success) {
+                    updateProgress(100, '¡Análisis completado!');
+                    document.getElementById('statusBadge').textContent = 'Completado';
+                    document.getElementById('statusBadge').className = 'status-badge completed';
+                    
+                    // Show results
+                    showResults(analyzeData.results || await fetchResults(currentJobId));
+                }
+
+            } catch (error) {
+                showError(error.message);
+                document.getElementById('statusBadge').textContent = 'Error';
+                document.getElementById('statusBadge').className = 'status-badge error';
+            }
+        }
+
+        async function fetchResults(jobId) {
+            const response = await fetch(`${API_URL}/api/results/${jobId}`);
+            const data = await response.json();
+            return data.results;
+        }
+
+        function updateProgress(percent, text) {
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            document.getElementById('progressText').textContent = text;
+        }
+
+        function showResults(results) {
+            document.getElementById('resultsSection').classList.add('active');
+
+            // Summary cards
+            const summaryGrid = document.getElementById('summaryGrid');
+            summaryGrid.innerHTML = `
+                <div class="result-card">
+                    <h3>Duración</h3>
+                    <div class="value">${results.video_info.duration_sec}s</div>
+                </div>
+                <div class="result-card">
+                    <h3>FPS</h3>
+                    <div class="value">${results.video_info.fps}</div>
+                </div>
+                <div class="result-card">
+                    <h3>Detecciones</h3>
+                    <div class="value">${results.detection_summary.total_detections}</div>
+                </div>
+                <div class="result-card">
+                    <h3>Jugadores Únicos</h3>
+                    <div class="value">${results.detection_summary.unique_players_tracked}</div>
+                </div>
+            `;
+
+            // Players table
+            const tableBody = document.getElementById('playersTableBody');
+            tableBody.innerHTML = results.player_metrics.map((player, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>#${player.tracker_id}</td>
+                    <td>${player.frames_tracked}</td>
+                    <td>${player.total_distance_px.toFixed(0)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = `❌ Error: ${message}`;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
