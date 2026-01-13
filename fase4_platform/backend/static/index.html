@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ Football Analytics Platform</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">⚽ Football Analytics</div>
+        <div class="nav-links">
+            <a href="#" onclick="showSection('home')" class="active">Inicio</a>
+            <a href="#" onclick="showSection('video')">📹 Video</a>
+            <a href="#" onclick="showSection('teams')">📊 Equipos</a>
+            <a href="#" onclick="showSection('players')">👥 Jugadores</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- HOME -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1>⚽ Football Analytics Platform</h1>
+                <p>Análisis táctico de fútbol con Inteligencia Artificial</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card" onclick="showSection('video')">
+                        <div class="feature-icon">📹</div>
+                        <h3>Análisis de Video</h3>
+                        <p>Sube un video y detecta jugadores con YOLO</p>
+                    </div>
+                    <div class="feature-card" onclick="showSection('teams')">
+                        <div class="feature-icon">📊</div>
+                        <h3>Análisis de Equipos</h3>
+                        <p>Estilo de juego con datos StatsBomb</p>
+                    </div>
+                    <div class="feature-card" onclick="showSection('players')">
+                        <div class="feature-icon">👥</div>
+                        <h3>Comparar Jugadores</h3>
+                        <p>Messi vs Mbappé, métricas OART</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIDEO ANALYSIS -->
+        <section id="video" class="section">
+            <h2>📹 Análisis de Video</h2>
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📤</div>
+                <p>Arrastra un video aquí o haz clic para seleccionar</p>
+                <input type="file" id="videoInput" accept=".mp4,.avi,.mov" hidden>
+                <button class="btn btn-primary" onclick="document.getElementById('videoInput').click()">
+                    Seleccionar Video
+                </button>
+            </div>
+            
+            <div id="videoProgress" class="progress-container" style="display: none;">
+                <p id="videoStatus">Procesando...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="videoProgressBar"></div>
+                </div>
+            </div>
+            
+            <div id="videoResults" class="results-container" style="display: none;"></div>
+        </section>
+
+        <!-- TEAM ANALYSIS -->
+        <section id="teams" class="section">
+            <h2>📊 Análisis de Equipos</h2>
+            
+            <div class="selector-container">
+                <div class="team-selector">
+                    <label>Equipo 1:</label>
+                    <select id="team1Select">
+                        <option value="">Seleccionar...</option>
+                        <option value="Argentina">🇦🇷 Argentina</option>
+                        <option value="France">🇫🇷 Francia</option>
+                        <option value="Croatia">🇭🇷 Croacia</option>
+                        <option value="Morocco">🇲🇦 Marruecos</option>
+                        <option value="Brazil">🇧🇷 Brasil</option>
+                        <option value="England">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option>
+                    </select>
+                </div>
+                
+                <div class="vs-badge">VS</div>
+                
+                <div class="team-selector">
+                    <label>Equipo 2:</label>
+                    <select id="team2Select">
+                        <option value="">Seleccionar...</option>
+                        <option value="Argentina">🇦🇷 Argentina</option>
+                        <option value="France">🇫🇷 Francia</option>
+                        <option value="Croatia">🇭🇷 Croacia</option>
+                        <option value="Morocco">🇲🇦 Marruecos</option>
+                        <option value="Brazil">🇧🇷 Brasil</option>
+                        <option value="England">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="compareTeams()">Comparar Equipos</button>
+            
+            <div id="teamsResults" class="results-container" style="display: none;"></div>
+        </section>
+
+        <!-- PLAYER ANALYSIS -->
+        <section id="players" class="section">
+            <h2>👥 Comparar Jugadores</h2>
+            
+            <div class="selector-container">
+                <div class="player-selector">
+                    <label>Jugador 1:</label>
+                    <select id="player1Select">
+                        <option value="">Seleccionar...</option>
+                        <optgroup label="Argentina">
+                            <option value="Messi">🇦🇷 Lionel Messi</option>
+                            <option value="Di María">🇦🇷 Ángel Di María</option>
+                            <option value="Álvarez">🇦🇷 Julián Álvarez</option>
+                        </optgroup>
+                        <optgroup label="Francia">
+                            <option value="Mbappé">🇫🇷 Kylian Mbappé</option>
+                            <option value="Griezmann">🇫🇷 Antoine Griezmann</option>
+                            <option value="Giroud">🇫🇷 Olivier Giroud</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div class="vs-badge">VS</div>
+                
+                <div class="player-selector">
+                    <label>Jugador 2:</label>
+                    <select id="player2Select">
+                        <option value="">Seleccionar...</option>
+                        <optgroup label="Argentina">
+                            <option value="Messi">🇦🇷 Lionel Messi</option>
+                            <option value="Di María">🇦🇷 Ángel Di María</option>
+                            <option value="Álvarez">🇦🇷 Julián Álvarez</option>
+                        </optgroup>
+                        <optgroup label="Francia">
+                            <option value="Mbappé">🇫🇷 Kylian Mbappé</option>
+                            <option value="Griezmann">🇫🇷 Antoine Griezmann</option>
+                            <option value="Giroud">🇫🇷 Olivier Giroud</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="comparePlayers()">Comparar Jugadores</button>
+            
+            <div id="playersResults" class="results-container" style="display: none;"></div>
+        </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
